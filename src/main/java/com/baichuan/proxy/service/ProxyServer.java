@@ -2,18 +2,16 @@ package com.baichuan.proxy.service;
 
 import com.baichuan.proxy.domain.ProxyConfig;
 import com.baichuan.proxy.exception.ProxyServerInitException;
+import com.baichuan.proxy.service.handler.codec.RequestBoCodec;
 import com.baichuan.proxy.utils.CertUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
@@ -59,13 +57,14 @@ public class ProxyServer {
             serverEndpoint.group(eventExecutors)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 200)
+                    .option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel sc) throws Exception {
                             sc.pipeline()
-                                    .addLast(new HttpServerCodec())
-                                    .addLast(new ServerHandler(eventExecutors, proxyConfig));
+                                    .addLast(new RequestBoCodec())
+                                    .addLast(new ServerHandlerNew(eventExecutors, proxyConfig));
                         }
                     });
 

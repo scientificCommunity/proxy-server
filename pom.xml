@@ -63,6 +63,12 @@
             <classifier>linux-x86_64</classifier>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.71</version>
+        </dependency>
+
     </dependencies>
 
     <build>
