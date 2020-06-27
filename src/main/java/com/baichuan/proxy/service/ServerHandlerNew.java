@@ -42,7 +42,6 @@ public class ServerHandlerNew extends ChannelInboundHandlerAdapter {
     private boolean proxyConnected2Server;
 
     private int status;
-    private int status1 = 0;
 
     private final ProxyConfig proxyConfig;
 
@@ -53,8 +52,8 @@ public class ServerHandlerNew extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof String && status1 == 0) {
-            status1 = 1;
+        if (msg instanceof String && status == RequestTimeStatus.FIRST) {
+            status = RequestTimeStatus.NOT_FIRST;
             try {
                 this.requestBO = JSON.parseObject((String) msg, RequestBO.class);
             } catch (JSONException e) {
