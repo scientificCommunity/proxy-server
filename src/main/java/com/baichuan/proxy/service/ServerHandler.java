@@ -55,7 +55,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         boolean isHttp = false;
-        log.debug("读取到客户端消息");
         if (msg instanceof HttpRequest) {
             isHttp = true;
             HttpRequest req = (HttpRequest) msg;

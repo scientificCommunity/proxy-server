@@ -9,14 +9,13 @@ import com.baichuan.proxy.service.handler.codec.RequestBoCodec;
 import com.baichuan.proxy.service.initializer.HttpProxyInitializer;
 import com.baichuan.proxy.service.initializer.TunnelProxyInitializer;
 import com.baichuan.proxy.service.listener.ForwardListener;
-import com.baichuan.proxy.utils.RequestUtils;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.*;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -84,7 +83,6 @@ public class ServerHandlerNew extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("=======================================读取客户端消息异常================================");
         ctx.channel().close();
         super.exceptionCaught(ctx, cause);
     }
