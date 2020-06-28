@@ -57,9 +57,10 @@ public class ServerHandlerNew extends ChannelInboundHandlerAdapter {
             try {
                 this.requestBO = JSON.parseObject((String) msg, RequestBO.class);
             } catch (JSONException e) {
-                log.warn("=========================JSON转换异常，msg：{}==================================", msg);
+                log.warn("=========================JSON转换失败，msg：{}==================================", msg);
             }
             ctx.channel().pipeline().remove(RequestBoCodec.class);
+            ctx.channel().pipeline().addFirst(new HttpServerCodec());
             return;
         }
         boolean isHttp = false;

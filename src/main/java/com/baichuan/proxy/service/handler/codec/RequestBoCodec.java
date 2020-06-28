@@ -38,8 +38,8 @@ public class RequestBoCodec extends ByteToMessageCodec<RequestBO> {
             in.readBytes(b2);
             String string = new String(b2, Charset.defaultCharset());
             out.add(string);
-        } catch (NumberFormatException e) {
-            log.warn("转换失败，s:{}", s);
+        } catch (Exception e) {
+            log.warn("转换失败，s:{}", s, e);
         } finally {
             int i1 = in.readableBytes();
             byte[] b3 = new byte[i1];

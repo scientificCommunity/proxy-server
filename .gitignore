@@ -38,3 +38,5 @@ modules.xml
 vcs.xml
 workspace.xml
 target
+build.sh
+Dockerfile

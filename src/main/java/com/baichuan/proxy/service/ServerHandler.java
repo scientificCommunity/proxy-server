@@ -6,6 +6,7 @@ import com.baichuan.proxy.domain.RequestBO;
 import com.baichuan.proxy.service.initializer.HttpProxyInitializer;
 import com.baichuan.proxy.service.initializer.TunnelProxyInitializer;
 import com.baichuan.proxy.service.listener.ForwardListener;
+import com.baichuan.proxy.utils.FileTypeCheckUtil;
 import com.baichuan.proxy.utils.RequestUtils;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -18,6 +19,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,8 +81,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             if (i > 0) {
                 byte[] bytes = new byte[i];
                 httpContent.content().readBytes(bytes);
-                String s = new String(bytes);
-                System.out.println(s);
+                String s = new String(bytes, Charset.defaultCharset());
+                log.debug("===========================数据类型：{}，host:{}|port:{}|content:{}", FileTypeCheckUtil.getFileType(bytes), this.requestBO.getHost(), this.requestBO.getPort(), s);
             }
             isHttp = true;
         } else {
